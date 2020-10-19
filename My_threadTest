@@ -1,0 +1,67 @@
+package Study.My_Thread;
+
+/**
+ * @Description
+ * @Author zdk
+ * @Date 2020/10/12 12:24
+ */
+public class My_Thread  implements Runnable{
+    private String who;
+    public My_Thread(String who)
+    {
+        this.who=who;
+    }
+    public void run()
+    {
+        for(int i=0;i<5;i++)
+        {
+            try{
+                Thread.sleep((int)(1200*Math.random()));
+            }
+            catch (InterruptedException e) { }
+            System.out.printf("%s在运行%n",who);
+        }
+
+    }
+}
+
+class My_Thread1 extends Thread{
+    String who;
+    public My_Thread1(String who){this.who=who;}
+    public void run()
+    {
+        for(int i=0;i<5;i++)
+        {
+            try{
+                Thread.sleep((int)(1200*Math.random()));
+            }
+            catch (InterruptedException e) { }
+            System.out.printf("%s在运行%n",who);
+        }
+
+    }
+}
+
+class Test1 {
+    public static void main(String[] args)
+    {
+        My_Thread t1=new My_Thread("t1");
+        My_Thread t2=new My_Thread("t2");
+        Thread x1=new Thread(t1);
+        Thread x2=new Thread(t2);
+        x1.start();
+        try{
+            x1.join();//调用join()必须进行异常处理,成功调用后会一直将调用的线程执行完后再执行其他线程
+        }
+        catch (InterruptedException e) {}
+        x2.start();
+
+        My_Thread1 tt1=new My_Thread1("tt1");
+        My_Thread1 tt2=new My_Thread1("tt2");
+        tt1.start();
+        try {
+            tt1.join();
+        }catch (InterruptedException e){}
+        tt2.start();
+    }
+}

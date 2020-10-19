@@ -16,6 +16,7 @@ package Study.My_Thread;
  * 3.使用synchronized(对象)  将目标对象作为同步对象，同一时间只能有一个线程能对期进行修改
  *
  * 释放同步对象的方式： synchronized 块自然结束，或者有异常抛出
+ *如果一个类，其方法都是由synchronized修饰的，那么该类就叫做线程安全的类
  */
 
 class Hero{

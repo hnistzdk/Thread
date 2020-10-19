@@ -16,31 +16,45 @@ package Study.My_Thread;
  * 3.使用synchronized(对象)  将目标对象作为同步对象，同一时间只能有一个线程能对期进行修改
  *
  * 释放同步对象的方式： synchronized 块自然结束，或者有异常抛出
- *如果一个类，其方法都是由synchronized修饰的，那么该类就叫做线程安全的类
+ *
+ * 如果一个类，其方法都是有synchronized修饰的，那么该类就叫做线程安全的类
  */
 
 class Hero{
+    String name;
     int hp;
     int mp;
-    public Hero(int hp,int mp){
-        this.hp=hp;this.mp=mp;
+    public Hero(String name,int hp,int mp){
+        this.name=name;this.hp=hp;this.mp=mp;
     }
 
     public synchronized void addHp(){
         this.hp+=10;
+        System.out.printf("%s 回血10点,增加血后，%s的血量是%d\n", name, name, hp);
+        this.notify();
     }
-    public void reduceHp(){
+    public synchronized void reduceHp(){
+        if(this.hp<20)
+        {
+            try{
+                this.wait();
+            }catch (InterruptedException e){}
+        }
         this.hp-=20;
+        System.out.printf("%s 减血20点,减血后，%s的血量是%d\n", name, name, hp);
     }
     public void attacked(){
         this.reduceHp();
+    }
+    boolean isDead(){
+        return hp<=0 ? true:false;
     }
 }
 
 public class Solve_ThreadSynchronization {
     public static void main(String[] args)
     {
-        Hero Kai=new Hero(100,100);
+        Hero Kai=new Hero("凯",100,100);
         int n = 5;
         Thread[] addThreads = new Thread[n];
         Thread[] reduceThreads = new Thread[n];
